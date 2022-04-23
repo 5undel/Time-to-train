@@ -77,6 +77,17 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
+ACCOUNT_AUTHENTICATION_METHOD = "email"                   # this is to use only their email when logging back in
+ACCOUNT_EMAIL_VERIFICATION = "none"                       # this is to bypass email verification
+ACCOUNT_EMAIL_REQUIRED = True                             # this makes it so emails are required when signing up
+ACCOUNT_USERNAME_REQUIRED = False                         # this makes it so usernames are not required, it will create one automatically
+ACCOUNT_SESSION_REMEMBER = False                          # this one makes it to hide the "Remember Me" checkbox
+ACCOUNT_UNIQUE_EMAIL = True                               # this one makes it so all emails are unique for each user
+LOGIN_REDIRECT_URL = "/profile/"                          # where to take a user when they login... so to their profile page
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"                         # where to take a user when they logout... back to the login page
+ACCOUNT_LOGOUT_ON_GET = True                              # this bypasses the "Are you sure you want to log-out" page
+LOGIN_URL = '/accounts/login/'                            # url for login  
+
 WSGI_APPLICATION = 'time_to_train.wsgi.application'
 
 
