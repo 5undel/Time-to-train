@@ -20,3 +20,15 @@ def membership(request):
     }
 
     return render(request, 'base/membership.html', context)
+
+
+def membership_detail(request, product_id):
+    """ A view to return the membership detail page """
+
+    product = get_object_or_404(Product, pk=product_id)
+
+    context = {
+        'product': product,
+    }
+
+    return render(request, 'base/membership_detail.html', context)
