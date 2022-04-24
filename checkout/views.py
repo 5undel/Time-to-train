@@ -6,13 +6,13 @@ from .forms import MembershipForm
 from base.models import Product
 from .models import CreateMembership, MembershipNumber
 
-
+import stripe
 # Create your views here.
 
 def checkout(request, pk):
     """ A view to complite payment """
-    # stripe_public_key = settings.STRIPE_PUBLIC_KEY
-    # stripe_secret_key = settings.STRIPE_SECRET_KEY
+    stripe_public_key = settings.STRIPE_PUBLIC_KEY
+    stripe_secret_key = settings.STRIPE_SECRET_KEY
     product = get_object_or_404(Product, pk=pk)
 
     if request.method == 'POST':
@@ -35,17 +35,17 @@ def checkout(request, pk):
         request.session['save_info'] = 'save-info' in request.POST
         return redirect(reverse('checkout_success', args=[order.membership_number]))
     else:
-        #stripe.api_key = stripe_secret_key
-        # intent = stripe.PaymentIntent.create(
-        #amount=int(product.price * 100),
-        # currency=settings.STRIPE_CURRENCY,
-        # )
+        stripe.api_key = stripe_secret_key
+        intent = stripe.PaymentIntent.create(
+        amount=int(product.price * 100),
+        currency=settings.STRIPE_CURRENCY,
+        )
         order_form = MembershipForm()
         template = 'checkout/checkout.html'
         context = {
             'order_form': order_form,
-            # 'stripe_public_key': stripe_public_key,
-            # 'client_secret': intent.client_secret,
+            'stripe_public_key': stripe_public_key,
+            'client_secret': intent.client_secret,
             'product': product,
         }
 
