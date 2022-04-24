@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
+{% endblock %}
+
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!--Overview of membership in checkout -->
+<div class="container bg-dark text-white">
+    <div class="row">
+        <div class="col">
+            <hr>
+            <h2 class="logo-font mb-4">Membership Checkout</h2>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-lg-6 order-lg-last mb-5 bg-dark text-white">
+            <div class="row">
+                <div class="col-7 offset-2">
+                    <p class="mb-1 mt-0  text-white">Order</p>
+                </div>
+
+            </div>
+
+            <div class="row text-white text-right">
+                <div class="col-7 offset-2">
+                    <p>Membership :</p>
+
+                </div>
+                <div class="col-3">
+                    <p class="my-0"><strong>{{ product.name }}</strong></p>
+                </div>
+                <div class="col-7 offset-2">
+                    <p class="my-0">Grand Total:</p>
+                </div>
+                <div class="col-3">
+                    <p class="my-0"><strong>${{ product.price | floatformat:2 }}</strong></p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12 col-lg-6 bg-dark">
+            <p class="text-white">Please fill out the form below to complite your membership</p>
+            <!--Form to create a membership and payment-->
+            <form action="{% url 'checkout' product.id %}" method="POST" id="payment-form">
+                {% csrf_token %}
+                <fieldset class="rounded px-3 mb-5">
+                    <legend class="fieldset-label small text-white px-2 w-auto">Details</legend>
+                    {{ order_form.full_name }}
+                    {{ order_form.email }}
+                    {{ order_form.phone_number }}
+                    {{ order_form.town_or_city }}
+                    {{ order_form.street_address1 }}
+                    {{ order_form.street_address2 }}
+                </fieldset>
+                <fieldset class="rounded px-3 mb-5"></fieldset>
+                <fieldset class="px-3">
+                    <legend class="fieldset-label small text-white px-2 w-auto">Payment</legend>
+                    <div class="mb-3" id="card-element"></div>
+                    <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+                </fieldset>
+                <!--Button to submit the payment-->
+                <button id="submit-button" class="btn btn-black rounded-0">
+                    <span class="font-weight-bold">Complete Membership</span>
+                </button>
+                <!--Text info to the user-->
+                <p class="small text-danger my-0">
+                    <span>Your card will be charged <strong>${{ product.price | floatformat:2 }}</strong> </span>
+                </p>
+            </form>
+            <br>
+                    <a href="{% url 'membership_detail' product.id %}" class="mb-0 text-white">Back</a>
+                    <br>
+                <br>
+        </div>
+    </div>
+</div>
+{% endblock %}
